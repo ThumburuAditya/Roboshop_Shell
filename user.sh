@@ -1,4 +1,5 @@
-source common.sh
+script_path=$(dirname $0)
+source ${script_path}/common.sh
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Download Node JS dependencies <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash
@@ -25,7 +26,7 @@ echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Install node js dependencies <<<<<<<<<<<<<
 npm install
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> copy the user systemd files <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-cp /home/centos/Roboshop_Shell/user.service /etc/systemd/system/user.service
+cp ${script_path}/user.service /etc/systemd/system/user.service
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> start the application <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
 systemctl daemon-reload
@@ -33,7 +34,7 @@ systemctl enable user
 systemctl start user
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Copy mongodb repo<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-cp /home/centos/Roboshop_Shell/mongo.repo /etc/yum.repos.d/mongo.repo
+cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Install mongodb<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
 yum install mongodb-org-shell -y

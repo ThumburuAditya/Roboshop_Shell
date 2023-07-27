@@ -1,4 +1,5 @@
-source common.sh
+script_path=$(dirname $0)
+source ${script_path}/common.sh
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Install python <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
 yum install python36 gcc python3-devel -y
@@ -22,7 +23,7 @@ echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Install dependencies   <<<<<<<<<<<<<<<<<<<
 pip3.6 install -r requirements.txt
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> copy the payment systemd file <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-cp /home/centos/Roboshop_Shell/payment.service /etc/systemd/system/payment.service
+cp ${script_path}/payment.service /etc/systemd/system/payment.service
 
 echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> start payment service <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
 systemctl daemon-reload
