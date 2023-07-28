@@ -3,14 +3,18 @@ print_head(){
    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> $1 <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
 }
 schema_setup(){
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Copy mongodb repo<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
+  # shellcheck disable=SC1009
+  if [ "$schema_setup" == "mongo"]
+  then
+    print_head "copy mongodb repo"
+    cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
 
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Install mongodb<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  yum install mongodb-org-shell -y
+    print_head "Install mongodb"
+    yum install mongodb-org-shell -y
 
-  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Load Schema <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
-  mongo --host user-dev.thumburuaditya.online </app/schema/${component}.js
+    print_head "load schema"
+    mongo --host user-dev.thumburuaditya.online </app/schema/${component}.js
+  fi
 }
 func_nodejs(){
   print_head "Downloading nodeJs depencies"
