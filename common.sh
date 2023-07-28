@@ -5,7 +5,7 @@ func_print_head(){
 }
 
 func_schema_setup(){
-  if [ "$schema_setup" == "mongo"]
+  if ["$schema_setup" == "mongo"]
   then
     func_print_head "copy mongodb repo"
     cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
@@ -15,6 +15,13 @@ func_schema_setup(){
 
     func_print_head "load schema"
     mongo --host ${component}-dev.thumburuaditya.online </app/schema/${component}.js
+
+  else if ["$schema_setup" == "mysql"]
+    func_print_head "Install Mysql Client"
+    yum install mysql -y
+    func_print_head "Load schema"
+    mysql -h mysql-dev.thumburuaditya.online -uroot -p${mysql_root_password} < /app/schema/${component}.sql
+    systemctl restart ${component}
   fi
 }
 
@@ -30,13 +37,7 @@ func_nodejs(){
   func_print_head "Install NodeJS dependencies"
   npm install
 
-  func_print_head "Copy systemd files"
-  cp ${script_path}/${component}.service /etc/systemd/system/${component}.service
-
-  func_print_head "start cart"
-  systemctl daemon-reload
-  systemctl enable ${component}
-  systemctl restart ${component}
+  func_systemd_service
 }
 
 func_app_prereq(){
@@ -56,6 +57,15 @@ func_app_prereq(){
   cd /app
 }
 
+func_systemd_service(){
+  func_print_head "Copy systemd files"
+    cp ${script_path}/${component}.service /etc/systemd/system/${component}.service
+
+    func_print_head "start component"
+    systemctl daemon-reload
+    systemctl enable ${component}
+    systemctl start ${component}
+}
 func_java(){
 
   func_print_head "Install Maven"
@@ -67,11 +77,5 @@ func_java(){
   mvn clean package
   mv target/${component}-1.0.jar ${component}.jar
 
-  func_print_head "Copy systemd files"
-  cp ${script_path}/${component}.service /etc/systemd/system/${component}.service
-
-  func_print_head "start shipping"
-  systemctl daemon-reload
-  systemctl enable ${component}
-  systemctl start ${component}
+  func_systemd_service
 }
