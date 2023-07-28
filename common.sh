@@ -3,7 +3,6 @@ print_head(){
    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> $1 <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
 }
 schema_setup(){
-  # shellcheck disable=SC1009
   if [ "$schema_setup" == "mongo"]
   then
     print_head "copy mongodb repo"
@@ -17,7 +16,7 @@ schema_setup(){
   fi
 }
 func_nodejs(){
-  print_head "Downloading nodeJs depencies"
+  print_head "Downloading nodeJs dependencies"
   curl -sL https://rpm.nodesource.com/setup_lts.x | bash
 
   print_head "Install NodeJS"
