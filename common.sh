@@ -2,7 +2,16 @@ app_user=roboshop
 print_head(){
    echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> $1 <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
 }
+schema_setup(){
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Copy mongodb repo<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
 
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Install mongodb<<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  yum install mongodb-org-shell -y
+
+  echo -e "\e[36m>>>>>>>>>>>>>>>>>>>>>> Load Schema <<<<<<<<<<<<<<<<<<<<<<<<\e[0m"
+  mongo --host user-dev.thumburuaditya.online </app/schema/${component}.js
+}
 func_nodejs(){
   print_head "Downloading nodeJs depencies"
   curl -sL https://rpm.nodesource.com/setup_lts.x | bash
